@@ -9,6 +9,9 @@ class Match {
     private final Score score = new Score(0, 0);
 
     Match(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
+        if (homeTeam == awayTeam) {
+            throw new IllegalArgumentException("Home and away teams cannot be the same");
+        }
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
     }
