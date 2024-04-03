@@ -24,7 +24,7 @@ class Match {
         private final int homeTeamScore;
         private final int awayTeamScore;
 
-        public Score(int homeTeamScore, int awayTeamScore) {
+        Score(int homeTeamScore, int awayTeamScore) {
             this.homeTeamScore = homeTeamScore;
             this.awayTeamScore = awayTeamScore;
         }
