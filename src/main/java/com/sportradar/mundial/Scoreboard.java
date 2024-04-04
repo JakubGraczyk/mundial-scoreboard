@@ -10,4 +10,8 @@ public class Scoreboard {
     public Set<Match> getOngoingMatches() {
         return ongoingMatches;
     }
+
+    public void startNewMatch(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
+        ongoingMatches.add(new Match(homeTeam, awayTeam));
+    }
 }

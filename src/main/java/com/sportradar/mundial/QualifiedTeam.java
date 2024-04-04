@@ -1,6 +1,6 @@
 package com.sportradar.mundial;
 
-enum QualifiedTeam {
+public enum QualifiedTeam {
     QATAR,
     ECUADOR,
     SENEGAL,
