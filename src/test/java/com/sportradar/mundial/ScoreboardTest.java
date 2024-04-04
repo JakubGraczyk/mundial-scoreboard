@@ -1,6 +1,7 @@
 package com.sportradar.mundial;
 
 import com.sportradar.mundial.util.TestArgumentsProvider;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +17,7 @@ class ScoreboardTest {
     @Test
     void scoreboardShouldBeInitializedWithEmptyMatchSet() {
         Scoreboard underTest = new Scoreboard();
-        assertThat(underTest.getOngoingMatches()).isEqualTo(Collections.emptySet());
+        assertThat(underTest.getOngoingMatches()).isEqualTo(Collections.emptyMap());
     }
 
     @Nested
@@ -29,8 +30,7 @@ class ScoreboardTest {
             underTest.startNewMatch(homeTeam, awayTeam);
 
             assertThat(underTest.getOngoingMatches()).hasSize(1);
-            Match onlyMatch = underTest.getOngoingMatches().iterator().next();
-            assertThat(onlyMatch.getScore()).isEqualTo(new Match.Score(0,0));
+            assertThat(underTest.getOngoingMatches().get(new ImmutablePair<>(homeTeam, awayTeam)).getScore()).isEqualTo(Match.Score.INITIAL_SCORE);
         }
 
         @Test
@@ -41,9 +41,10 @@ class ScoreboardTest {
             underTest.startNewMatch(QualifiedTeam.JAPAN, QualifiedTeam.GERMANY);
 
             assertThat(underTest.getOngoingMatches()).hasSize(2);
-            assertThat(underTest.getOngoingMatches().stream()
+            assertThat(underTest.getOngoingMatches().values()
+                    .stream()
                     .map(Match::getScore))
-                    .allMatch(s -> new Match.Score(0,0).equals(s));
+                    .allMatch(Match.Score.INITIAL_SCORE::equals);
         }
     }
 }

@@ -1,17 +1,19 @@
 package com.sportradar.mundial;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Scoreboard {
 
-    Set<Match> ongoingMatches = new HashSet<>();
+    Map<ImmutablePair<QualifiedTeam, QualifiedTeam>, Match> ongoingMatches = new HashMap<>();
 
-    public Set<Match> getOngoingMatches() {
+    public Map<ImmutablePair<QualifiedTeam, QualifiedTeam>, Match> getOngoingMatches() {
         return ongoingMatches;
     }
 
     public void startNewMatch(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
-        ongoingMatches.add(new Match(homeTeam, awayTeam));
+        ongoingMatches.put(new ImmutablePair<>(homeTeam, awayTeam), Match.createNewMatchBetween(homeTeam, awayTeam));
     }
 }

@@ -12,14 +12,14 @@ class MatchTest {
     @ParameterizedTest
     @ArgumentsSource(TestArgumentsProvider.QualifiedTeamArgumentsProvider.class)
     void matchShouldStartWithScoreNilToNil(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
-        Match underTest = new Match(homeTeam, awayTeam);
-        assertThat(underTest.getScore()).isEqualTo(new Match.Score(0, 0));
+        Match underTest = Match.createNewMatchBetween(homeTeam, awayTeam);
+        assertThat(underTest.getScore()).isEqualTo(Match.Score.INITIAL_SCORE);
     }
 
     @ParameterizedTest
     @ArgumentsSource(TestArgumentsProvider.ConflictingArgumentsProvider.class)
     void illegalArgumentExceptionShouldBeThrown_whenBothTeamsAreTheSame(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
-        assertThatThrownBy(() -> new Match(homeTeam, awayTeam))
+        assertThatThrownBy(() ->  Match.createNewMatchBetween(homeTeam, awayTeam))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Home and away teams cannot be the same");
     }
