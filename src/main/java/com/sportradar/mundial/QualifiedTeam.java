@@ -24,5 +24,14 @@ public enum QualifiedTeam {
     BELGIUM,
     CANADA,
     MOROCCO,
-    CROATIA
+    CROATIA,
+    UKRAINE,
+    BRAZIL,
+    CHILE,
+    COLOMBIA,
+    PERU,
+    URUGUAY,
+    VENEZUELA,
+    SOUTH_KOREA,
+    SERBIA
 }
