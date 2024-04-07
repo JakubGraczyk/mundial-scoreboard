@@ -79,7 +79,33 @@ class ScoreboardTest {
             assertThatThrownBy(() -> underTest.updateScore(new ImmutablePair<>(QualifiedTeam.WALES, QualifiedTeam.AUSTRALIA), 1, 1))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Match between WALES and AUSTRALIA not found");
-            ;
+        }
+    }
+
+    @Nested
+    class FinishMatch {
+
+        @Test
+        void scoreboardShouldFinishMatchAndRemoveIt() {
+            Scoreboard underTest = new Scoreboard();
+            underTest.startNewMatch(QualifiedTeam.BRAZIL, QualifiedTeam.SERBIA);
+            underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
+
+            underTest.finishMatch(new ImmutablePair<>(QualifiedTeam.BRAZIL, QualifiedTeam.SERBIA));
+
+            assertThat(underTest.getOngoingMatches()).hasSize(1);
+            assertThat(underTest.getOngoingMatches().keySet()).containsExactly(new ImmutablePair<>(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA));
+        }
+
+        @Test
+        void illegalArgumentExceptionShouldBeThrown_whenMatchNotFound() {
+            Scoreboard underTest = new Scoreboard();
+            underTest.startNewMatch(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA);
+            underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
+
+            assertThatThrownBy(() -> underTest.finishMatch(new ImmutablePair<>(QualifiedTeam.BRAZIL, QualifiedTeam.SERBIA)))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Match between BRAZIL and SERBIA not found");
         }
     }
 }
