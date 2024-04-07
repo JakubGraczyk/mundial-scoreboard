@@ -25,4 +25,13 @@ public class Scoreboard {
         }
         ongoingMatches.get(matchBetween).updateScore(homeTeamScore, awayTeamScore);
     }
+
+    public void finishMatch(ImmutablePair<QualifiedTeam, QualifiedTeam> matchBetween) {
+        Match match = ongoingMatches.get(matchBetween);
+        if (match == null) {
+            throw new IllegalArgumentException(String.format("Match between %s and %s not found",
+                    matchBetween.getLeft(), matchBetween.getRight()));
+        }
+        ongoingMatches.remove(matchBetween);
+    }
 }
