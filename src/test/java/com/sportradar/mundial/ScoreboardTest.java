@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
 class ScoreboardTest {
@@ -45,6 +46,40 @@ class ScoreboardTest {
                     .stream()
                     .map(Match::getScore))
                     .allMatch(Match.Score.INITIAL_SCORE::equals);
+        }
+    }
+
+    @Nested
+    class UpdateScore {
+
+        @Test
+        void scoreboardShouldSuccessfullyUpdateScores() {
+            Scoreboard underTest = new Scoreboard();
+            underTest.startNewMatch(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA);
+            underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
+
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA), 1, 1);
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA), 1, 4);
+
+            assertThat(underTest.getOngoingMatches().get(new ImmutablePair<>(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA)).getScore())
+                    .isEqualTo(Match.Score.of(1, 1));
+            assertThat(underTest.getOngoingMatches().get(new ImmutablePair<>(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA)).getScore())
+                    .isEqualTo(Match.Score.of(1, 4));
+        }
+
+        @Test
+        void illegalArgumentExceptionShouldBeThrown_whenMatchNotFound() {
+            Scoreboard underTest = new Scoreboard();
+            underTest.startNewMatch(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA);
+            underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
+
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA), 1, 1);
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA), 1, 4);
+
+            assertThatThrownBy(() -> underTest.updateScore(new ImmutablePair<>(QualifiedTeam.WALES, QualifiedTeam.AUSTRALIA), 1, 1))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Match between WALES and AUSTRALIA not found");
+            ;
         }
     }
 }
