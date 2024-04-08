@@ -127,9 +127,10 @@ class ScoreboardTest {
         }
 
         @Test
-        void scoreboardShouldReturnOngoingMatchesSortedByStartingTimeAndTotalScoreIsTheSame() {
+        void scoreboardShouldReturnOngoingMatchesSortedByStartingTimeAndTotalScoreIsTheSame() throws InterruptedException {
             Scoreboard underTest = new Scoreboard();
             underTest.startNewMatch(QualifiedTeam.MOROCCO, QualifiedTeam.BELGIUM);
+            Thread.sleep(1000L);
             underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
 
             underTest.updateScore(new ImmutablePair<>(QualifiedTeam.MOROCCO, QualifiedTeam.BELGIUM), 1, 1);
