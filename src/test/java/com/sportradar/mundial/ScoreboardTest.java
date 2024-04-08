@@ -120,11 +120,24 @@ class ScoreboardTest {
             underTest.startNewMatch(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA);
 
             underTest.updateScore(new ImmutablePair<>(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA), 1, 1);
-
             List<MatchSummary> matchesSummary = underTest.getMatchesSummary();
 
             assertThat(matchesSummary).hasSize(2);
             assertThat(matchesSummary.get(0)).isEqualTo(new MatchSummary(QualifiedTeam.BELGIUM, 1,QualifiedTeam.CROATIA, 1));
+        }
+
+        @Test
+        void scoreboardShouldReturnOngoingMatchesSortedByStartingTimeAndTotalScoreIsTheSame() {
+            Scoreboard underTest = new Scoreboard();
+            underTest.startNewMatch(QualifiedTeam.MOROCCO, QualifiedTeam.BELGIUM);
+            underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
+
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.MOROCCO, QualifiedTeam.BELGIUM), 1, 1);
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA), 2, 0);
+            List<MatchSummary> matchesSummary = underTest.getMatchesSummary();
+
+            assertThat(matchesSummary).hasSize(2);
+            assertThat(matchesSummary.get(0)).isEqualTo(new MatchSummary(QualifiedTeam.USA, 2,QualifiedTeam.AUSTRALIA, 0));
         }
     }
 }
