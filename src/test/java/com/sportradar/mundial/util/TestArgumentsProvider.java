@@ -7,9 +7,9 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 import java.util.stream.Stream;
 
-public class TestArgumentsProvider {
+public final class TestArgumentsProvider {
 
-    public static class QualifiedTeamArgumentsProvider implements ArgumentsProvider {
+     public static class QualifiedTeamArgumentsProvider implements ArgumentsProvider {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             return Stream.of(Arguments.of(QualifiedTeam.POLAND, QualifiedTeam.MEXICO),

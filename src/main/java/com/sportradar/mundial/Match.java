@@ -3,7 +3,7 @@ package com.sportradar.mundial;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-class Match implements Comparable<Match> {
+final class Match implements Comparable<Match> {
 
     private final QualifiedTeam homeTeam;
     private final QualifiedTeam awayTeam;
@@ -33,7 +33,7 @@ class Match implements Comparable<Match> {
         return new MatchSummary(homeTeam, score.homeTeamScore, awayTeam, score.awayTeamScore);
     }
 
-    public void updateScore(int homeTeamScore, int awayTeamScore) {
+    void updateScore(int homeTeamScore, int awayTeamScore) {
         if (homeTeamScore < 0 || awayTeamScore < 0) {
             throw new IllegalArgumentException("Score can not be negative");
         }

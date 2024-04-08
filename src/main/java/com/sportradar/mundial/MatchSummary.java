@@ -2,7 +2,7 @@ package com.sportradar.mundial;
 
 import java.util.Objects;
 
-public class MatchSummary {
+public final class MatchSummary {
 
     private final QualifiedTeam homeTeam;
     private final Integer homeTeamScore;
@@ -14,6 +14,22 @@ public class MatchSummary {
         this.homeTeamScore = homeTeamScore;
         this.awayTeam = awayTeam;
         this.awayTeamScore = awayTeamScore;
+    }
+
+    public QualifiedTeam getHomeTeam() {
+        return homeTeam;
+    }
+
+    public Integer getHomeTeamScore() {
+        return homeTeamScore;
+    }
+
+    public QualifiedTeam getAwayTeam() {
+        return awayTeam;
+    }
+
+    public Integer getAwayTeamScore() {
+        return awayTeamScore;
     }
 
     @Override

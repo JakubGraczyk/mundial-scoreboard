@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scoreboard {
+public final class Scoreboard {
 
-    Map<ImmutablePair<QualifiedTeam, QualifiedTeam>, Match> ongoingMatches = new HashMap<>();
+    private final Map<ImmutablePair<QualifiedTeam, QualifiedTeam>, Match> ongoingMatches = new HashMap<>();
 
     public void startNewMatch(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
         ongoingMatches.put(new ImmutablePair<>(homeTeam, awayTeam), Match.createNewMatchBetween(homeTeam, awayTeam));
