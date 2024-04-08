@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -106,6 +107,24 @@ class ScoreboardTest {
             assertThatThrownBy(() -> underTest.finishMatch(new ImmutablePair<>(QualifiedTeam.BRAZIL, QualifiedTeam.SERBIA)))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Match between BRAZIL and SERBIA not found");
+        }
+    }
+
+    @Nested
+    class GetOngoingMatchesSummary {
+
+        @Test
+        void scoreboardShouldReturnOngoingMatchesSortedByTotalScoreIfItDiffers() {
+            Scoreboard underTest = new Scoreboard();
+            underTest.startNewMatch(QualifiedTeam.USA, QualifiedTeam.AUSTRALIA);
+            underTest.startNewMatch(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA);
+
+            underTest.updateScore(new ImmutablePair<>(QualifiedTeam.BELGIUM, QualifiedTeam.CROATIA), 1, 1);
+
+            List<MatchSummary> matchesSummary = underTest.getMatchesSummary();
+
+            assertThat(matchesSummary).hasSize(2);
+            assertThat(matchesSummary.get(0)).isEqualTo(new MatchSummary(QualifiedTeam.BELGIUM, 1,QualifiedTeam.CROATIA, 1));
         }
     }
 }
