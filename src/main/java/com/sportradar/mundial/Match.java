@@ -2,7 +2,7 @@ package com.sportradar.mundial;
 
 import java.util.Objects;
 
-class Match {
+class Match implements Comparable<Match> {
 
     private final QualifiedTeam homeTeam;
     private final QualifiedTeam awayTeam;
@@ -25,11 +25,23 @@ class Match {
         return score;
     }
 
+    MatchSummary toSummary() {
+        return new MatchSummary(homeTeam, score.homeTeamScore, awayTeam, score.awayTeamScore);
+    }
+
     public void updateScore(int homeTeamScore, int awayTeamScore) {
         if (homeTeamScore < 0 || awayTeamScore < 0) {
             throw new IllegalArgumentException("Score can not be negative");
         }
         this.score = Score.of(homeTeamScore, awayTeamScore);
+    }
+
+    @Override
+    public int compareTo(Match otherMatch) {
+        int totalGoalsThisMatch = score.homeTeamScore + score.awayTeamScore;
+        int totalGoalsOtherMatch = otherMatch.score.homeTeamScore + otherMatch.score.awayTeamScore;
+
+        return Integer.compare(totalGoalsThisMatch, totalGoalsOtherMatch);
     }
 
     static class Score {
@@ -45,7 +57,7 @@ class Match {
             this.awayTeamScore = awayTeamScore;
         }
 
-        public static Score of(int homeTeamScore, int awayTeamScore) {
+        static Score of(int homeTeamScore, int awayTeamScore) {
             return new Score(homeTeamScore, awayTeamScore);
         }
 
