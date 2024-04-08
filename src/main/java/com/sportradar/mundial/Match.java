@@ -1,11 +1,14 @@
 package com.sportradar.mundial;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 class Match implements Comparable<Match> {
 
     private final QualifiedTeam homeTeam;
     private final QualifiedTeam awayTeam;
+
+    private final LocalDateTime started;
     private Score score;
 
     private Match(QualifiedTeam homeTeam, QualifiedTeam awayTeam) {
@@ -14,6 +17,7 @@ class Match implements Comparable<Match> {
         }
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.started = LocalDateTime.now();
         this.score = Score.INITIAL_SCORE;
     }
 
@@ -40,8 +44,11 @@ class Match implements Comparable<Match> {
     public int compareTo(Match otherMatch) {
         int totalGoalsThisMatch = score.homeTeamScore + score.awayTeamScore;
         int totalGoalsOtherMatch = otherMatch.score.homeTeamScore + otherMatch.score.awayTeamScore;
-
-        return Integer.compare(totalGoalsThisMatch, totalGoalsOtherMatch);
+        int goalComparisonResult = Integer.compare(totalGoalsThisMatch, totalGoalsOtherMatch);
+        if (goalComparisonResult == 0) {
+            return started.compareTo(otherMatch.started);
+        }
+        return goalComparisonResult;
     }
 
     static class Score {
